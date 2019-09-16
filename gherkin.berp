@@ -1,0 +1,31 @@
+﻿[
+	Tokens -> #Empty,#Comment,#TagLine,#ScenarioLine,#ExamplesLine,#StepLine,#DocStringSeparator,#TableRow,#Language
+	IgnoredTokens -> #Comment,#Empty
+	ClassName -> Parser
+	Namespace -> Gherkin
+]
+
+GherkinDocument! := Scenario_Definition*
+
+// we could avoid defining Scenario_Definition, but that would require regular look-aheads, so worse performance
+
+Scenario_Definition! := Tags? Scenario
+Scenario! := #ScenarioLine Scenario_Description Scenario_Step*
+
+
+Scenario_Step := Step
+
+Step! := #StepLine Step_Arg?
+Step_Arg := (DataTable | DocString)
+
+DataTable! := #TableRow+
+DocString! := #DocStringSeparator #Other* #DocStringSeparator
+
+Tags! := #TagLine+
+
+Scenario_Description := Description_Helper
+
+// we need to explicitly mention comment, to avoid merging it into the description line's #Other token
+// we also eat the leading empty lines, the tailing lines are not removed by the parser to avoid lookahead, this has to be done by the AST builder
+Description_Helper := #Empty* Description? #Comment*
+Description! := #Other+

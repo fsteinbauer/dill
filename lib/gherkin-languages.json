@@ -1,0 +1,38 @@
+{
+  "en": {
+    "and": [
+      "* ",
+      "And "
+    ],
+    "but": [
+      "* ",
+      "But "
+    ],
+    "examples": [
+      "Examples",
+      "Scenarios"
+    ],
+    "feature": [
+      "Feature",
+      "Business Need",
+      "Ability"
+    ],
+    "given": [
+      "* ",
+      "Given "
+    ],
+    "name": "English",
+    "native": "English",
+    "scenario": [
+      "Step"
+    ],
+    "then": [
+      "* ",
+      "Then "
+    ],
+    "when": [
+      "* ",
+      "When "
+    ]
+  }
+}
