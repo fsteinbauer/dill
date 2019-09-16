@@ -8,4 +8,6 @@ module.exports = () => {
     fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
   );
 
+  console.log(cypressOptions);
+
 }
