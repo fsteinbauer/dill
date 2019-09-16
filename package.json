@@ -13,10 +13,10 @@
     "url": "https://github.beeone.at/George/dill"
   },
   "dependencies": {
-    "cypress": "^3.4.0",
-    "cypress-cucumber-preprocessor": "^1.12.0",
-    "picklejs": "git+https://github.com/hoverinc/picklejs.git",
-    "cypress-image-snapshot": "^3.1.1",
-    "hex-rgb": "^4.1.0"
+    // "cypress": "^3.4.0",
+    // "cypress-cucumber-preprocessor": "^1.12.0",
+    // "picklejs": "git+https://github.com/hoverinc/picklejs.git",
+    // "cypress-image-snapshot": "^3.1.1",
+    // "hex-rgb": "^4.1.0"
   }
 }
