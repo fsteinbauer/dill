@@ -1,41 +1,22 @@
 {
-  "_from": "git+ssh://git@github.beeone.at:George/dill.git",
-  "_id": "dill@1.0.0",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/dill",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "dill@git+ssh://git@github.beeone.at:George/dill.git",
-    "name": "dill",
-    "escapedName": "dill",
-    "rawSpec": "git+ssh://git@github.beeone.at:George/dill.git",
-    "saveSpec": "git+ssh://git@github.beeone.at:George/dill.git",
-    "fetchSpec": "git@github.beeone.at:George/dill.git",
-    "gitCommittish": null
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+ssh://git@github.beeone.at:George/dill.git#bccb08dd1fd6c1212e68936b302308e5dd4159d9",
-  "_spec": "dill@git+ssh://git@github.beeone.at:George/dill.git",
-  "_where": "C:\\Users\\7099\\Desktop\\playground",
-  "author": {
-    "name": "Florian Steinbauer"
-  },
-  "bundleDependencies": false,
-  "deprecated": false,
-  "description": "Seasons cucumber and pickle",
-  "license": "ISC",
-  "main": "index.js",
   "name": "dill",
+  "version": "1.0.0",
+  "description": "Seasons cucumber and pickle",
+  "author": "Florian Steinbauer",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "https://github.beeone.at/George/dill"
   },
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.0"
+  "dependencies": {
+    "cypress": "^3.4.0",
+    "cypress-cucumber-preprocessor": "^1.12.0",
+    "picklejs": "git+https://github.com/hoverinc/picklejs.git",
+    "cypress-image-snapshot": "^3.1.1",
+    "hex-rgb": "^4.1.0"
+  }
 }

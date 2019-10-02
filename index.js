@@ -1,33 +1,115 @@
-const fs = require('fs');
 const Parser = require('./lib/parser')
 const Compiler = require('./lib/pickles/compiler')
+const Watcher = require('./lib/watcher')
+const fs = require('fs')
+const glob = require('glob')
 
 const parserObj = new Parser();
+const watcherObj = new Watcher();
 
 
-module.exports = (config) => {
-  const appRoot = process.cwd();
+let path = undefined;
 
-
-  const cypressOptions = JSON.parse(
-    fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
-  );
+let cypressOptions = undefined;
+const appRoot = process.cwd();
 
 
 
-  config.steps = [];
+/**
+ *  This function loads the cypress config array
+ */
+const loadCypressOptions = () => {
 
-  cypressOptions.steps.forEach((path) => {
-  	const content = fs.readFileSync(`${appRoot}/${path}`, "utf-8");
-
-  	const ast = parserObj.parse(content);
-  	
-  	config.steps.push(ast)
-  });
-
-
-  console.log(config);
-
-  return config;
+    if(typeof cypressOptions == "undefined") {
+        cypressOptions = JSON.parse(
+            fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
+        );
+    }
 }
 
+/**
+ * Returns the path of the of the stepDefinitons file
+ *
+ * @returns {string|number}
+ */
+const getStepsPath = () => {
+
+    loadCypressOptions();
+    const path = cypressOptions.stepDefinitions;
+
+    if(typeof path === "undefined"){
+        console.error("Error: Property 'stepsDefinitions' not set in cypress.json");
+        return -1;
+    }
+
+    return path;
+}
+
+/**
+ * Reads a steps file and loads the parses the data
+ *
+ * @param file
+ * @throws {CompositeParserException} Will throw an error if the file can't be parsed
+ * @returns {GherkinDocument}
+ */
+const loadSteps = (path) => {
+
+    const data = fs.readFileSync(path, 'utf-8');
+    const ast = parserObj.parse(data);
+
+    return ast;
+}
+
+/**
+ * All the steps get printed to a temporary file, which will be read in the test case execution
+ *
+ * @param steps
+ */
+const writeStepsToFile = (steps) => {
+
+    const path = cypressOptions.stepDefinitionTemp;
+
+    fs.writeFile(path, JSON.stringify(steps), (err) => {
+        if (err) {
+            console.error(`Error: Could not write to file ${path}`);
+            return;
+        }
+        console.log(`Wrote steps file: ${path}`);
+    });
+}
+
+/**
+ * If the contents of the path change, the test will automatically reload
+ *
+ * @param path
+ */
+const watchForChanges = (path, steps) => {
+    watcherObj.watch(path, steps, (file) => {
+        steps[file.replace(/\\/g, '/')] = loadSteps(file);
+        writeStepsToFile(steps);
+    });
+};
+
+
+
+module.exports = () => {
+
+    let steps = {};
+
+    path = getStepsPath();
+
+    let files = glob.sync(`${path}`);
+
+    let i;
+    for(i = 0; i < files.length; i++) {
+        let file = files[i];
+        console.log(`parsing: ${file}`);
+        let result = loadSteps(file);
+        steps[file.replace(/\\/g, '/')] = result;
+    }
+
+    writeStepsToFile(steps);
+
+    watchForChanges(path, steps);
+
+}
