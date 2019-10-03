@@ -19,6 +19,7 @@
     "cypress-image-snapshot": "^3.1.1",
     "glob": "^7.1.4",
     "hex-rgb": "^4.1.0",
-    "picklejs": "git+https://github.com/hoverinc/picklejs.git"
+    "picklejs": "git+https://github.com/hoverinc/picklejs.git",
+    "ws": "^7.1.2"
   }
 }
