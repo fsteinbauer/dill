@@ -39,7 +39,7 @@ All available phrases can be found here:  [Phrases](https://www.picklejs.com/doc
 #### 1. Install package
 Currently this package is not published via npm. Therefore it needs to be included via git:
 
-```ecma script 6
+```JavaScript
 // package.json
 {
     // ...
@@ -52,7 +52,7 @@ Currently this package is not published via npm. Therefore it needs to be includ
 #### 2. Update `cypress.json`
 Next we need to specify where Dill can find our `.steps` file and put the compiled result.
 
-````ecma script level 4
+````JavaScript
 // cypress.json
 {
     // ...
@@ -64,7 +64,7 @@ Next we need to specify where Dill can find our `.steps` file and put the compil
 #### 3. Load the Plugin
 Make sure the following plugins get loaded:
 
-```ecmascript 6
+```JavaScript
 const cucumber = require('cypress-cucumber-preprocessor').default;
 const {
   addMatchImageSnapshotPlugin,
