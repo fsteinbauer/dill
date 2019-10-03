@@ -82,3 +82,5 @@ module.exports = (on, config) => {
 
 #### 4. Start testing!
 Create your first `.steps` file under the previously defined location in `cypress.json`.
+
+![dillon](docs/dillon.jpg)
