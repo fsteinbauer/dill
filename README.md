@@ -3,7 +3,7 @@
 # Dill 
 ##### *Seasons cucumber and pickle*
 
-<img src="docs/logo.png" align="left"/>
+<img src="docs/logo.png" align="right"/>
  
 This project aims to improve speed to create BDD-style cypress testcases. A set of predefined steps can be used to
  perform the most common operations in testing like clicking, typing and verifying the existance of elements.
