@@ -42,7 +42,7 @@ module.exports = (stepdata) => {
 					console.log(
 						'reloading Cypress because "%s" has changed',
 						data.filename
-					)
+					);
 					window.top.document.querySelector('.reporter .restart').click()
 				}
 			} catch (e) {

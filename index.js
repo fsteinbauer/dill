@@ -1,8 +1,8 @@
-const Parser = require('./lib/parser')
-const Compiler = require('./lib/pickles/compiler')
-const Watcher = require('./lib/watcher')
-const fs = require('fs')
-const glob = require('glob')
+const Parser = require('./lib/parser');
+const Compiler = require('./lib/pickles/compiler');
+const Watcher = require('./lib/watcher');
+const fs = require('fs');
+const glob = require('glob');
 
 const parserObj = new Parser();
 const watcherObj = new Watcher();
@@ -25,7 +25,7 @@ const loadCypressOptions = () => {
             fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
         );
     }
-}
+};
 
 /**
  * Returns the path of the of the stepDefinitons file
@@ -43,7 +43,7 @@ const getStepsPath = () => {
     }
 
     return path;
-}
+};
 
 /**
  * Reads a steps file and loads the parses the data
@@ -58,7 +58,7 @@ const loadSteps = (path) => {
     const ast = parserObj.parse(data);
 
     return ast;
-}
+};
 
 /**
  * All the steps get printed to a temporary file, which will be read in the test case execution
@@ -76,12 +76,13 @@ const writeStepsToFile = (steps) => {
         }
         console.log(`Wrote steps file: ${path}`);
     });
-}
+};
 
 /**
  * If the contents of the path change, the test will automatically reload
  *
  * @param path
+ * @param steps
  */
 const watchForChanges = (path, steps) => {
     watcherObj.watch(path, steps, (file) => {
@@ -112,4 +113,4 @@ module.exports = () => {
 
     watchForChanges(path, steps);
 
-}
+};
