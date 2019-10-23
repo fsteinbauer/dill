@@ -81,11 +81,11 @@ const writeStepsToFile = (steps) => {
 /**
  * If the contents of the path change, the test will automatically reload
  *
- * @param path
+ * @param files array
  * @param steps
  */
-const watchForChanges = (path, steps) => {
-    watcherObj.watch(path, steps, (file) => {
+const watchForChanges = (files, steps) => {
+    watcherObj.watch(files, steps, (file) => {
         steps[file.replace(/\\/g, '/')] = loadSteps(file);
         writeStepsToFile(steps);
     });
@@ -111,6 +111,6 @@ module.exports = () => {
 
     writeStepsToFile(steps);
 
-    watchForChanges(path, steps);
+    watchForChanges(files, steps);
 
 };

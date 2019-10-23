@@ -4,37 +4,48 @@ const waitUntil = require('async-wait-until')
 
 const ws = new WebSocket('ws://localhost:8765')
 
+const replacePlaceholders = (args, text) => {
+
+	let i;
+	for (i = 1; i <= args.length; i++){
+		text = text.replace(`{arg${i}}`, args[i-1]);
+	}
+	return text;
+};
 
 module.exports = (stepdata) => {
 
 	console.log("Loading picklejs Steps...");
 
-	console.log(stepdata);
+	const values = Object.values(stepdata);
+	for (const value of values ){
 
-	stepdata[0].steps.forEach((config) => {
+		value.steps.forEach((config) => {
 
-		steps.defineStep(new RegExp(config.name), function(){
+			steps.defineStep(config.name, function(...args){
 
-			config.steps.forEach((step) => {
+				config.steps.forEach((step) => {
 
-				const runnable = {
-					argument: "undefined",
-					keyword: "When",
-					type: "Step",
-					text: step.text
-				}
+					const text = replacePlaceholders(args, step.text);
 
-				resolver.resolveAndRunStepDefinition(runnable);
+					const runnable = {
+						argument: "undefined",
+						keyword: "Then",
+						type: "Step",
+						text: text
+					};
+
+					resolver.resolveAndRunStepDefinition(runnable);
+				});
 			});
 		});
-	});
+	}
 
 
 	waitUntil(() => ws.readyState === WebSocket.OPEN, 2000, 50);
 
 	ws.onmessage = ev => {
 		console.log('message from OS')
-		console.log(ev)
 		if (ev.type === 'message' && ev.data) {
 			try {
 				const data = JSON.parse(ev.data)
@@ -52,7 +63,7 @@ module.exports = (stepdata) => {
 				console.error(ev.data)
 			}
 		}
-	}
+	};
 
 	console.log("Done.");
-}
+};
