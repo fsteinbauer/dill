@@ -1,9 +1,16 @@
 const steps = require('cypress-cucumber-preprocessor/steps');
 const resolver = require('cypress-cucumber-preprocessor/lib/resolveStepDefinition');
-const waitUntil = require('async-wait-until')
+const waitUntil = require('async-wait-until');
+const flatten = require('./lib/watcher');
 
 const ws = new WebSocket('ws://localhost:8765')
 
+/**
+ *
+ * @param args array
+ * @param text string
+ * @returns string
+ */
 const replacePlaceholders = (args, text) => {
 
 	let i;
@@ -13,9 +20,31 @@ const replacePlaceholders = (args, text) => {
 	return text;
 };
 
-module.exports = (stepdata) => {
+/**
+ *
+ * @param variables object
+ * @param text string
+ * @returns string
+ */
+const replaceVariables = (variables, text) => {
+	for (const variable in variables) {
+		if(variables.hasOwnProperty(variable)){
+			text = text.replace('$'+variable, variables[variable]);
+		}
+	}
+	return text;
+};
+
+/**
+ *
+ * @param stepdata object
+ * @param variables object
+ */
+module.exports = (stepdata, variables = {}) => {
 
 	console.log("Loading picklejs Steps...");
+
+	const flattened = flatten(variables);
 
 	const values = Object.values(stepdata);
 	for (const value of values ){
@@ -26,7 +55,9 @@ module.exports = (stepdata) => {
 
 				config.steps.forEach((step) => {
 
-					const text = replacePlaceholders(args, step.text);
+					let text = replacePlaceholders(args, step.text);
+
+					text = replaceVariables(flattened, text);
 
 					const runnable = {
 						argument: "undefined",
@@ -34,7 +65,6 @@ module.exports = (stepdata) => {
 						type: "Step",
 						text: text
 					};
-
 					resolver.resolveAndRunStepDefinition(runnable);
 				});
 			});
@@ -45,10 +75,10 @@ module.exports = (stepdata) => {
 	waitUntil(() => ws.readyState === WebSocket.OPEN, 2000, 50);
 
 	ws.onmessage = ev => {
-		console.log('message from OS')
+		console.log('message from OS');
 		if (ev.type === 'message' && ev.data) {
 			try {
-				const data = JSON.parse(ev.data)
+				const data = JSON.parse(ev.data);
 				if (data.command === 'reload' && data.filename) {
 					console.log(
 						'reloading Cypress because "%s" has changed',
@@ -57,10 +87,10 @@ module.exports = (stepdata) => {
 					window.top.document.querySelector('.reporter .restart').click()
 				}
 			} catch (e) {
-				console.error('Could not parse message from plugin')
-				console.error(e.message)
-				console.error('original text')
-				console.error(ev.data)
+				console.error('Could not parse message from plugin');
+				console.error(e.message);
+				console.error('original text');
+				console.error(ev.data);
 			}
 		}
 	};
