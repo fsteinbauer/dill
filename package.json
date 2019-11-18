@@ -1,6 +1,6 @@
 {
   "name": "dill",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Seasons cucumber and pickle",
   "author": "Florian Steinbauer",
   "license": "ISC",
@@ -14,9 +14,7 @@
   },
   "dependencies": {
     "async-wait-until": "^1.2.4",
-    "chokidar": "2.1.8",
-    "cypress": "^3.4.0",
-    "cypress-cucumber-preprocessor": "^1.12.0",
+    "chokidar": "^3.3.0",
     "cypress-image-snapshot": "^3.1.1",
     "glob": "^7.1.4",
     "hex-rgb": "^4.1.0",

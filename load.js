@@ -1,7 +1,7 @@
 const steps = require('cypress-cucumber-preprocessor/steps');
 const resolver = require('cypress-cucumber-preprocessor/lib/resolveStepDefinition');
 const waitUntil = require('async-wait-until');
-const flatten = require('./lib/watcher');
+const flatten = require('./lib/flatten');
 
 const ws = new WebSocket('ws://localhost:8765')
 
