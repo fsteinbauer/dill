@@ -20,10 +20,13 @@ const appRoot = process.cwd();
  */
 const loadCypressOptions = () => {
 
-    if(typeof cypressOptions == "undefined") {
+    if("undefined" === typeof cypressOptions) {
         cypressOptions = JSON.parse(
             fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
         );
+        if("undefined" !== typeof cypressOptions.dill){
+            cypressOptions = cypressOptions.dill;
+        }
     }
 };
 
