@@ -13,6 +13,8 @@ let path = undefined;
 let cypressOptions = undefined;
 const appRoot = process.cwd();
 
+const dynamicReloading = false;
+
 
 
 /**
@@ -114,6 +116,8 @@ module.exports = () => {
 
     writeStepsToFile(steps);
 
-    watchForChanges(files, steps);
+    if(dynamicReloading) {
+        watchForChanges(files, steps);
+    }
 
 };
