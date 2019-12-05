@@ -13,6 +13,8 @@ let path = undefined;
 let cypressOptions = undefined;
 const appRoot = process.cwd();
 
+const dynamicReloading = false;
+
 
 
 /**
@@ -20,10 +22,13 @@ const appRoot = process.cwd();
  */
 const loadCypressOptions = () => {
 
-    if(typeof cypressOptions == "undefined") {
+    if("undefined" === typeof cypressOptions) {
         cypressOptions = JSON.parse(
             fs.readFileSync(`${appRoot}/cypress.json`, "utf-8")
         );
+        if("undefined" !== typeof cypressOptions.dill){
+            cypressOptions = cypressOptions.dill;
+        }
     }
 };
 
@@ -111,6 +116,8 @@ module.exports = () => {
 
     writeStepsToFile(steps);
 
-    watchForChanges(files, steps);
+    if(dynamicReloading) {
+        watchForChanges(files, steps);
+    }
 
 };
